@@ -1,0 +1,76 @@
+.table{
+    width: 100%;
+    height: 100vh;
+    margin-top: -19px;
+    color: #3c75b3;
+    &_wrapper{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    &_hed{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    &_hed button{
+        border: none;
+        padding: 10px 20px;
+        background-color:rgb(84, 161, 220);
+        color: white;
+        border-radius: 10px;
+    }
+    &_hed button:hover{
+        background-color:rgb(255, 255, 255);
+        color: black;
+        border: 1px solid ;
+        cursor: pointer;
+    }
+    &_body{
+        width: 100%;
+        height: 80%;
+    }
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        padding: 15px 12px;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+    th {
+        background-color: #f4f4f4;
+    }
+    tr:hover{
+        background-color: #f0f0f0;
+    }
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+
+        button {
+          margin: 0 5px;
+          padding: 10px 15px;
+          border: 1px solid #007bff;
+          background-color: white;
+          color: #007bff;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s, color 0.3s;
+
+          &.active {
+            background-color: #007bff;
+            color: white;
+            border: 1px solid #0056b3;
+          }
+
+          &:hover:not(.active) {
+            background-color: #e7f1ff;
+          }}}
+}
