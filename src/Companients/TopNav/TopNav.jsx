@@ -9,10 +9,9 @@ const TopNav = () => {
     <div className='topnav'>
       <div className="topnav_wrapper">
         <div className="topnav_btn1">
-          <button><ClearAllIcon/></button>
         </div>
         <div className="topnav_btn2">
-          <button><PersonIcon/><NavLink to="/login">Admin</NavLink></button>
+          <button><PersonIcon/><NavLink className="link" to="/login">Admin</NavLink></button>
         </div>
       </div>
     </div>
