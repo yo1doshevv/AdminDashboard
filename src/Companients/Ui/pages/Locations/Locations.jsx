@@ -1,8 +1,13 @@
 import React from 'react'
+import AddTable from '../../../Table/Table'
 
 const Locations = () => {
   return (
-    <div>Locations</div>
+    <div className='dash'>
+      <div className="dash_wrapper">
+        <AddTable/>
+      </div>
+    </div>
   )
 }
 

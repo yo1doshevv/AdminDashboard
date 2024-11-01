@@ -1,45 +1,46 @@
 import React, { useState, useEffect } from "react"; // useEffect qo'shildi
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import "./Dashboard.scss";
 
 const Dashboard = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  // Tokenni tekshirish
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/"); 
-    }
-  }, [navigate]);
+  // // Tokenni tekshirish
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   if (!token) {
+  //     navigate("/dashboard"); 
+  //   }
+  // }, [navigate]);
 
-  const data = [
-    { id: 1, ism: "Ali", yoshi: 25, kasbi: "Dasturchi", manzil: "Toshkent" },
-    { id: 2, ism: "Begzod", yoshi: 30, kasbi: "Dizayner", manzil: "Samarqand" },
-    { id: 3, ism: "Gulbahor", yoshi: 27, kasbi: "Muallim", manzil: "Buxoro" },
-    { id: 4, ism: "Javlon", yoshi: 35, kasbi: "Shifokor", manzil: "Farg'ona" },
-    { id: 5, ism: "Malika", yoshi: 23, kasbi: "Talaba", manzil: "Xiva" },
-    { id: 6, ism: "Zafar", yoshi: 29, kasbi: "Muhandis", manzil: "Navoiy" },
-    { id: 7, ism: "Asal", yoshi: 32, kasbi: "Rassom", manzil: "Qarshi" },
-    { id: 8, ism: "Bekzod", yoshi: 40, kasbi: "Sportchi", manzil: "Jizzax" },
-  ];
+  // const data = [
+  //   { id: 1, ism: "Ali", yoshi: 25, kasbi: "Dasturchi", manzil: "Toshkent" },
+  //   { id: 2, ism: "Begzod", yoshi: 30, kasbi: "Dizayner", manzil: "Samarqand" },
+  //   { id: 3, ism: "Gulbahor", yoshi: 27, kasbi: "Muallim", manzil: "Buxoro" },
+  //   { id: 4, ism: "Javlon", yoshi: 35, kasbi: "Shifokor", manzil: "Farg'ona" },
+  //   { id: 5, ism: "Malika", yoshi: 23, kasbi: "Talaba", manzil: "Xiva" },
+  //   { id: 6, ism: "Zafar", yoshi: 29, kasbi: "Muhandis", manzil: "Navoiy" },
+  //   { id: 7, ism: "Asal", yoshi: 32, kasbi: "Rassom", manzil: "Qarshi" },
+  //   { id: 8, ism: "Bekzod", yoshi: 40, kasbi: "Sportchi", manzil: "Jizzax" },
+  // ];
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 5;
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const rowsPerPage = 5;
 
-  // Satrlarni aniqlash
-  const indexOfLastRow = currentPage * rowsPerPage;
-  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-  const currentRows = data.slice(indexOfFirstRow, indexOfLastRow);
+  // // Satrlarni aniqlash
+  // const indexOfLastRow = currentPage * rowsPerPage;
+  // const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+  // const currentRows = data.slice(indexOfFirstRow, indexOfLastRow);
 
-  // Sahnani o'zgartirish funksiyasi
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  // // Sahnani o'zgartirish funksiyasi
+  // const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div className="dash">
-      <div className="dash_wrapper">
+      <p style={{color: "black", top: 100}}>Sayitga Hush Kelibsiz!</p>
+      {/* <div className="dash_wrapper">
         <div className="dash_hed">
-          <h1>Catigories</h1>
+          <h1>Dashbard</h1>
           <button className="btn">Add Catigories</button>
         </div>
         <div className="dash_body">
@@ -77,7 +78,7 @@ const Dashboard = () => {
             ))}
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -3,13 +3,26 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import "react-toastify/dist/ReactToastify.css";
 import "./Table.scss";
 import Loaderr from "../Loader/Loader";
+import { useLocation } from "react-router-dom";
 
 const AddTable = () => {
   const [Catigories, setCatigories] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [openModal, setOpenModal] = useState(false);
+  const [newCategory, setNewCategory] = useState({
+    name_en: "",
+    name_ru: "",
+    image: null,
+  });
+  const rowsPerPage = 5;
+  const locations = useLocation().pathname;
 
-  // Kategoriyalarni olish uchun API chaqiruvi
   function GetCtigoria() {
     axios
       .get(`https://autoapi.dezinfeksiyatashkent.uz/api/categories`)
@@ -34,33 +47,89 @@ const AddTable = () => {
 
   useEffect(() => {
     GetCtigoria();
-  }, []); // Bu yerda bo'sh array qo'shilishi kerak
+  }, []);
 
-
-  //DeletCatigories
-  function DeletCatigories(item){
-    const token = localStorage.getItem('token')
-     axios.delete(`https://autoapi.dezinfeksiyatashkent.uz/api/categories/${item}`,{
-        headers:{
-            Authorization: `Bearer ${token}`
+  const DeletCatigories = async (id) => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.delete(
+        `https://autoapi.dezinfeksiyatashkent.uz/api/categories/${id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
         }
-     }).then((data)=> console.log(data)
-     ).then((data)=>{
-        if(data.data.success){
-            toast.success(data.data.message);
-        }else{
-            toast.warning(data.data.message)
-        }
+      );
+      if (response.data.success) {
+        toast.success(response.data.message);
+        GetCtigoria(); // Ma'lumotlarni qayta yuklash
+      } else {
+        toast.warning("O'chirishda xatolik yuz berdi");
+      }
+    } catch (error) {
+      toast.error("Xatolik yuz berdi");
+      console.error("Delete Error:", error.response || error.message);
+    }
+  };
+  
+  const totalPages = Math.ceil(Catigories.length / rowsPerPage);
+  const startIndex = (currentPage - 1) * rowsPerPage;
+  const currentData = Catigories.slice(startIndex, startIndex + rowsPerPage);
 
-        GetCtigoria();
-     })
-  }
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  // Modal Handling
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewCategory({ ...newCategory, [name]: value });
+  };
+
+  const handleImageChange = (e) => {
+    setNewCategory({ ...newCategory, image: e.target.files[0] });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("name_en", newCategory.name_en);
+    formData.append("name_ru", newCategory.name_ru);
+    formData.append("image", newCategory.image);
+
+    axios
+      .post(
+        `https://autoapi.dezinfeksiyatashkent.uz/api/categories`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
+      .then((response) => {
+        if (response.data.success) {
+          toast.success("Category added successfully!");
+          GetCtigoria();
+          handleCloseModal();
+        } else {
+          toast.warning("Failed to add category.");
+        }
+      })
+      .catch(() => {
+        toast.error("Error adding category.");
+      });
+  };
+
   return (
     <div className="table">
       <div className="table_wrapper">
         <div className="table_hed">
           <h1>Categories</h1>
-          <button className="btn">Add Categories</button>
+          <button className="btn" onClick={handleOpenModal}>
+            Add Categories
+          </button>
         </div>
 
         <div className="table_body">
@@ -76,10 +145,10 @@ const AddTable = () => {
               </tr>
             </thead>
             <tbody>
-              {Catigories.length > 0 ? (
-                Catigories.map((element, index) => (
+              {currentData.length > 0 ? (
+                currentData.map((element, index) => (
                   <tr key={element.id}>
-                    <td>{index + 1}</td>
+                    <td>{startIndex + index + 1}</td>
                     <td>{element.name_en}</td>
                     <td>{element.name_ru}</td>
                     <td>Active</td>
@@ -97,6 +166,7 @@ const AddTable = () => {
                         <Button
                           sx={{ color: "#ff0400", borderColor: "#ff0400" }}
                           variant="outlined"
+                          onClick={() => DeletCatigories(element.id)}
                         >
                           Delete
                         </Button>
@@ -107,14 +177,69 @@ const AddTable = () => {
               ) : (
                 <tr>
                   <td colSpan="6">
-                    <Loaderr/>
+                    <Loaderr />
                   </td>
                 </tr>
               )}
             </tbody>
           </table>
+
+          {/* Pagination Controls */}
+          {totalPages > 1 && (
+            <div className="pagination">
+              {[...Array(totalPages)].map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => handlePageChange(i + 1)}
+                  className={`page-item ${
+                    currentPage === i + 1 ? "active" : ""
+                  }`}
+                >
+                  {i + 1}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
+
+      {/* Add Category Modal */}
+      <Modal open={openModal} onClose={handleCloseModal}>
+        <Box className="modal-box">
+          <h2>Add New Category</h2>
+          <form onSubmit={handleSubmit}>
+            <TextField
+              label="Name (en)"
+              name="name_en"
+              value={newCategory.name_en}
+              onChange={handleInputChange}
+              fullWidth
+              margin="normal"
+              required
+            />
+            <TextField
+              label="Name (ru)"
+              name="name_ru"
+              value={newCategory.name_ru}
+              onChange={handleInputChange}
+              fullWidth
+              margin="normal"
+              required
+            />
+            <input
+              type="file"
+              name="image"
+              accept="image/*"
+              onChange={handleImageChange}
+              required
+            />
+            <Button type="submit" variant="contained" sx={{ mt: 2 }}>
+              Submit
+            </Button>
+          </form>
+        </Box>
+      </Modal>
+
       <ToastContainer />
     </div>
   );

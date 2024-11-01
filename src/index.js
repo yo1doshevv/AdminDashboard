@@ -4,11 +4,13 @@ import { BrowserRouter } from "react-router-dom";
 import AppRouter from "../src/Companients/Ui/Routes/Router"; // Sizning asosiy Router faylingiz
 import "./index.scss";
 import App from "./App";
+import Footer from "./Companients/Footer/Footer";
 
 const root = ReactDOM.createRoot(document.getElementById('root')); // Root yaratish
 root.render(
   <BrowserRouter>
     <App /> 
     <AppRouter />
+    <Footer/>
   </BrowserRouter>
 );
